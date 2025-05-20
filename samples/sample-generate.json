@@ -1,0 +1,5 @@
+{
+    "model": "gemma:2b",
+    "prompt": "日本の四季について短く説明してください。",
+    "stream": false
+}

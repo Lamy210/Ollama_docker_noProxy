@@ -1,0 +1,9 @@
+{
+    "model": "gemma:2b",
+    "messages": [
+        {
+            "role": "user",
+            "content": "Pythonでフィボナッチ数列を計算する関数を書いてください。"
+        }
+    ]
+}

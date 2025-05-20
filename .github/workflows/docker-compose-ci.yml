@@ -1,0 +1,39 @@
+name: Docker Compose CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  docker-compose-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Docker Compose
+        uses: docker/setup-buildx-action@v1
+
+      - name: Validate docker-compose.yml
+        run: docker-compose config
+
+      - name: Lint Dockerfile
+        uses: brpaz/hadolint-action@v1.5.0
+        with:
+          dockerfile: Dockerfile
+
+      - name: Build Docker Compose services
+        run: docker-compose build --no-cache
+
+      - name: Test Docker Compose Up
+        run: |
+          docker-compose up -d
+          sleep 10
+          docker-compose ps
+          if [ $(docker-compose ps | grep -c "Up") -ne 3 ]; then
+            echo "Not all containers are up"
+            docker-compose logs
+            exit 1
+          fi
+          docker-compose down

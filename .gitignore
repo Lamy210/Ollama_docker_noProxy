@@ -1,0 +1,32 @@
+# Docker & Ollama関連のファイル
+ollama_data/models/
+ollama_data/blobs/
+ollama_data/manifests/
+ollama_data/id_*
+ollama_data/*.pub
+
+# 設定ファイルやキーなど
+.env
+.htpasswd
+*.pem
+*.key
+*.crt
+*.cer
+
+# OS関連のファイル
+.DS_Store
+Thumbs.db
+.Spotlight-V100
+.Trashes
+._*
+
+# エディタ関連のファイル
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ログファイル
+*.log
+logs/

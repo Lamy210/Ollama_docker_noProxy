@@ -1,0 +1,47 @@
+services:
+  ollama:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ollama
+    volumes:
+      - ./ollama_data:/root/.ollama
+    ports:
+      - "11434:11434"
+    restart: unless-stopped
+    # GPU設定を無効化（CPUモードで実行）
+    networks:
+      - ollama-network
+
+  # Ollama Web UI - GUIインターフェース
+  ollama-webui:
+    image: ghcr.io/ollama-webui/ollama-webui:main
+    container_name: ollama-webui
+    restart: unless-stopped
+    depends_on:
+      - ollama
+    ports:
+      - "3000:8080"
+    environment:
+      - "OLLAMA_API_BASE_URL=http://ollama:11434/api"
+      - "PUBLIC_OLLAMA_API_BASE_URL=/api"
+    networks:
+      - ollama-network
+
+  # Nginx - リバースプロキシ
+  nginx:
+    image: nginx:latest
+    container_name: ollama-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - ollama-webui
+    networks:
+      - ollama-network
+
+networks:
+  ollama-network:
+    driver: bridge
