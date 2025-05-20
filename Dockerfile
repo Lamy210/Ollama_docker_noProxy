@@ -1,4 +1,4 @@
-FROM ollama/ollama:latest
+FROM ollama/ollama:0.7.0
 
 # Ollamaのデフォルトポートを公開
 EXPOSE 11434

@@ -15,7 +15,7 @@ services:
 
   # Ollama Web UI - GUIインターフェース
   ollama-webui:
-    image: ghcr.io/ollama-webui/ollama-webui:main
+    image: ghcr.io/open-webui/open-webui:0.6.10
     container_name: ollama-webui
     restart: unless-stopped
     depends_on:
@@ -30,7 +30,7 @@ services:
 
   # Nginx - リバースプロキシ
   nginx:
-    image: nginx:latest
+    image: nginx:1.27.5-alpine
     container_name: ollama-nginx
     restart: unless-stopped
     ports:
