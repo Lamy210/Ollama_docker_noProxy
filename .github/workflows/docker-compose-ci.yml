@@ -10,30 +10,30 @@ jobs:
   docker-compose-validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Setup Docker Compose
-        uses: docker/setup-buildx-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       - name: Validate docker-compose.yml
-        run: docker-compose config
+        run: docker compose config
 
       - name: Lint Dockerfile
-        uses: brpaz/hadolint-action@v1.5.0
+        uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: Dockerfile
 
       - name: Build Docker Compose services
-        run: docker-compose build --no-cache
+        run: docker compose build --no-cache
 
       - name: Test Docker Compose Up
         run: |
-          docker-compose up -d
+          docker compose up -d
           sleep 10
-          docker-compose ps
-          if [ $(docker-compose ps | grep -c "Up") -ne 3 ]; then
+          docker compose ps
+          if [ $(docker compose ps | grep -c "Up") -ne 3 ]; then
             echo "Not all containers are up"
-            docker-compose logs
+            docker compose logs
             exit 1
           fi
-          docker-compose down
+          docker compose down
